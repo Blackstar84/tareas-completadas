@@ -15,13 +15,19 @@ class App extends Component {
     }
   }
   verificarTarea = (e) =>{
-    const completada = e.target;
-    if(this.state.tasks.){
-      completada.classList.remove('done');
-    }else{
-      completada.classList.add('done');
-      
-    }
+    let indice = e.target.id;    
+    this.setState({
+      tasks:
+      this.state.tasks.map(val=>{           
+        if(val.id === indice){
+          console.log('estoy dentro')
+          val.done = !val.done
+        }        
+        return val
+      })
+    })
+    
+    
   }
 
   handlerOnType = (ev) => {
@@ -33,6 +39,7 @@ class App extends Component {
   }
   handlerOnSubmit=(event)=>{
     event.preventDefault();
+    
     let completo = {id: this.state.tasks.length+1, name: this.state.newTask, done: false}
     this.setState({tasks: this.state.tasks.concat([completo])})
     this.setState({newTask:""})
@@ -46,7 +53,11 @@ class App extends Component {
         <div className="list">
           <h3>Por hacer:</h3>
           <ul className="todo">
-            {this.state.tasks.map((task, index) => <li key={task.id} onClick={this.verificarTarea}>{task.name}</li>)}
+            {this.state.tasks.map((task, index) =>
+              
+               <li id={task.id} key={task.id} className={task.done ? 'done' : ''} onClick={this.verificarTarea}>{task.name}</li> 
+                                        
+              )}
           </ul>
           <form onSubmit={this.handlerOnSubmit}>
             <input type="text" id="new-task" onChange={this.handlerOnType} placeholder="Ingresa una tarea y oprime Enter" value={this.state.newTask} />
