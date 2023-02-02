@@ -11,13 +11,12 @@ class App extends Component {
         { id: 2, name: "Hacer la cama", done: true },
         { id: 3, name: "Leer un rato", done: false }
       ],
-      newTask: '',
-      valor: 3,
+      newTask: ''
     }
   }
   verificarTarea = (e) =>{
     const completada = e.target;
-    if(completada.classList.contains('done')){
+    if(this.state.tasks.){
       completada.classList.remove('done');
     }else{
       completada.classList.add('done');
@@ -26,16 +25,16 @@ class App extends Component {
   }
 
   handlerOnType = (ev) => {
-    const valor = ev.target.value;  
-    console.log(this.task.length);  
-    const agregar = {id: this.task.length+1, name: valor, done: false}
-    this.setState({newTask:agregar});
+    let valor = ev.target.value;
+    
+    this.setState({newTask:valor});
      
 
   }
   handlerOnSubmit=(event)=>{
     event.preventDefault();
-    this.setState({task: this.state.tasks.concat([this.state.newTask])})
+    let completo = {id: this.state.tasks.length+1, name: this.state.newTask, done: false}
+    this.setState({tasks: this.state.tasks.concat([completo])})
     this.setState({newTask:""})
 
     
