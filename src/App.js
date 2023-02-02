@@ -11,11 +11,13 @@ class App extends Component {
         { id: 2, name: "Hacer la cama", done: true },
         { id: 3, name: "Leer un rato", done: false }
       ],
-      newTask: ''
+      newTask: '',
+      vacio: false
     }
   }
   verificarTarea = (e) =>{
-    let indice = e.target.id;    
+    let indice = parseInt(e.target.id, 10);
+    console.log(indice);    
     this.setState({
       tasks:
       this.state.tasks.map(val=>{           
@@ -39,10 +41,15 @@ class App extends Component {
   }
   handlerOnSubmit=(event)=>{
     event.preventDefault();
+    if(this.state.newTask ===''){
+      console.log(this.state.vacio)
+      this.setState({vacio:true})  
+    }else{
+      let completo = {id: this.state.tasks.length+1, name: this.state.newTask, done: false}
+      this.setState({tasks: this.state.tasks.concat([completo])})
+      this.setState({newTask:""})
+    }
     
-    let completo = {id: this.state.tasks.length+1, name: this.state.newTask, done: false}
-    this.setState({tasks: this.state.tasks.concat([completo])})
-    this.setState({newTask:""})
 
     
   };
@@ -60,7 +67,7 @@ class App extends Component {
               )}
           </ul>
           <form onSubmit={this.handlerOnSubmit}>
-            <input type="text" id="new-task" onChange={this.handlerOnType} placeholder="Ingresa una tarea y oprime Enter" value={this.state.newTask} />
+            <input type="text" id="new-task" onChange={this.handlerOnType} className={this.state.vacio ? 'error' : ''} placeholder="Ingresa una tarea y oprime Enter" value={this.state.newTask} />
           </form>
         </div>
       </div>
